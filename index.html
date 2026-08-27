@@ -1,0 +1,315 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Спокойный недельный планировщик домашних дел." />
+    <title>Домашние дела легко</title>
+    <link rel="stylesheet" href="styles.css" />
+    <script src="script.js" defer></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main-content">Перейти к содержимому</a>
+
+    <header class="site-header">
+      <div class="page-shell header-content">
+        <div>
+          <p class="eyebrow">Недельный планировщик</p>
+          <h1>Домашние дела легко</h1>
+          <p class="header-message">Немного заботы о доме — уже достаточно</p>
+        </div>
+        <button
+          class="theme-toggle"
+          type="button"
+          data-theme-toggle
+          aria-pressed="false"
+          aria-label="Включить тёмную тему"
+        >
+          <span aria-hidden="true">◐</span>
+          <span data-theme-label>Тёмная тема</span>
+        </button>
+      </div>
+    </header>
+
+    <main id="main-content" class="page-shell main-content" tabindex="-1">
+      <section class="week-navigation" aria-labelledby="week-title">
+        <div class="section-heading week-heading">
+          <div>
+            <p class="eyebrow">Ваш план</p>
+            <h2 id="week-title" data-week-title>Загрузка недели…</h2>
+          </div>
+          <p class="week-caption" data-week-caption></p>
+        </div>
+        <div class="week-actions" aria-label="Навигация по неделям">
+          <button class="button button-secondary" type="button" data-week-action="previous">← Предыдущая</button>
+          <button class="button button-primary" type="button" data-week-action="today">Сегодня</button>
+          <button class="button button-secondary" type="button" data-week-action="next">Следующая →</button>
+        </div>
+      </section>
+
+      <section class="daily-summary" aria-labelledby="summary-title">
+        <div class="summary-icon" aria-hidden="true">☀</div>
+        <div>
+          <h2 id="summary-title">Сегодня</h2>
+          <p data-summary-copy>На этот день пока ничего не запланировано. Начните с малого, когда будете готовы.</p>
+        </div>
+        <button class="icon-button" type="button" data-dismiss-summary aria-label="Скрыть сводку на сегодня">×</button>
+      </section>
+
+      <section class="overdue-panel" aria-labelledby="overdue-title" data-overdue-panel hidden>
+        <div class="section-heading compact-heading">
+          <div>
+            <p class="eyebrow">Нужны внимание</p>
+            <h2 id="overdue-title">Просроченные дела</h2>
+          </div>
+          <button class="button button-secondary" type="button" data-move-all-overdue>Перенести все на сегодня</button>
+        </div>
+        <div class="overdue-list" data-overdue-list></div>
+      </section>
+
+      <section class="habit-panel" aria-labelledby="habit-title">
+        <div class="habit-copy">
+          <p class="eyebrow">Ежедневная привычка</p>
+          <h2 id="habit-title">15 минут для дома</h2>
+          <p data-timer-status>Начните с малого — немного времени для дома.</p>
+        </div>
+        <div class="habit-timer" aria-label="Таймер ежедневной привычки">
+          <p class="timer-value" aria-live="polite" data-timer-value>15:00</p>
+          <div class="timer-actions" data-timer-actions></div>
+          <div class="habit-secondary-actions">
+            <button class="text-button" type="button" data-mark-habit>Отметить вручную</button>
+            <button class="text-button" type="button" data-open-dialog="custom-habit-dialog">Добавить привычку</button>
+            <button class="text-button" type="button" data-open-dialog="timer-settings-dialog">Настроить</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="statistics" aria-labelledby="statistics-title">
+        <div class="section-heading compact-heading">
+          <div>
+            <p class="eyebrow">Ваш ритм</p>
+            <h2 id="statistics-title">Статистика привычки</h2>
+          </div>
+          <span class="section-note" data-statistics-note>Появится после первых отметок</span>
+        </div>
+        <div class="stat-grid">
+          <article class="stat-card"><p>Текущая серия</p><strong data-stat-current>0 дней</strong></article>
+          <article class="stat-card"><p>Лучшая серия</p><strong data-stat-best>0 дней</strong></article>
+          <article class="stat-card"><p>За эту неделю</p><strong data-stat-week>0 из 7</strong></article>
+          <article class="stat-card"><p>За этот месяц</p><strong data-stat-month>0 дней</strong></article>
+        </div>
+      </section>
+
+      <section class="week-board-section" aria-labelledby="board-title">
+        <div class="section-heading compact-heading">
+          <div>
+            <p class="eyebrow">По дням</p>
+            <h2 id="board-title">Неделя</h2>
+          </div>
+          <span class="section-note">Все небольшие дела на виду</span>
+        </div>
+        <div class="week-board" data-week-board aria-live="polite"></div>
+      </section>
+
+      <section class="management-entry" aria-labelledby="management-title">
+        <div>
+          <p class="eyebrow">Порядок и данные</p>
+          <h2 id="management-title">Управление</h2>
+          <p>Категории, архив и сохранность данных — в одном месте.</p>
+        </div>
+        <button class="button button-secondary" type="button" data-open-dialog="management-dialog">Открыть управление</button>
+      </section>
+    </main>
+
+    <div class="toast-region" aria-live="polite" aria-atomic="true" data-toast-region></div>
+
+    <div class="dialog-backdrop" data-dialog-backdrop hidden>
+      <section class="dialog" role="dialog" aria-modal="true" aria-labelledby="task-dialog-title" data-dialog="task-dialog" hidden>
+        <div class="dialog-header">
+          <div>
+            <p class="eyebrow" data-task-dialog-kicker>Новое дело</p>
+            <h2 id="task-dialog-title" tabindex="-1" data-task-dialog-title>Добавить задачу</h2>
+          </div>
+          <button class="icon-button" type="button" data-close-dialog aria-label="Закрыть окно добавления задачи">×</button>
+        </div>
+        <form class="task-form" data-placeholder-form>
+          <input name="task-id" type="hidden" />
+          <label for="task-title">Название задачи<input id="task-title" name="title" type="text" maxlength="120" required aria-describedby="task-form-error" /></label>
+          <label for="task-date">Дата<input id="task-date" name="date" type="date" required /></label>
+          <label for="task-category">Категория<select id="task-category" name="category"></select></label>
+          <label for="task-repeat">Повторение<select id="task-repeat" name="repeat"><option value="none">Не повторять</option><option value="daily">Каждый день</option><option value="weekly">Каждую неделю</option><option value="monthly">Каждый месяц</option></select></label>
+          <label for="task-note">Заметка<textarea id="task-note" name="note" maxlength="1000" rows="4"></textarea></label>
+          <div class="draft-choice" data-draft-choice hidden>
+            <p>Найден несохранённый черновик этой задачи.</p>
+            <div class="dialog-actions"><button class="button button-secondary" type="button" data-discard-task-draft>Начать с исходных значений</button><button class="button button-primary" type="button" data-restore-task-draft>Восстановить черновик</button></div>
+          </div>
+          <p id="task-form-error" class="form-error" aria-live="assertive" data-task-form-error></p>
+          <div class="dialog-actions">
+            <button class="button button-secondary" type="button" data-cancel-task-form>Отмена</button>
+            <button class="button button-primary" type="submit" data-task-submit>Сохранить задачу</button>
+          </div>
+        </form>
+      </section>
+
+      <section class="dialog" role="dialog" aria-modal="true" aria-labelledby="categories-dialog-title" data-dialog="categories-dialog" hidden>
+        <div class="dialog-header">
+          <div>
+            <p class="eyebrow">Порядок</p>
+            <h2 id="categories-dialog-title" tabindex="-1">Категории</h2>
+          </div>
+          <button class="icon-button" type="button" data-close-dialog aria-label="Закрыть окно категорий">×</button>
+        </div>
+        <form class="category-form" data-category-form>
+          <input name="category-id" type="hidden" />
+          <label for="category-name">Название<input id="category-name" name="category-name" type="text" maxlength="40" required /></label>
+          <label for="category-color">Цвет<select id="category-color" name="category-color"></select></label>
+          <p class="form-error" aria-live="assertive" data-category-form-error></p>
+          <div class="dialog-actions">
+            <button class="button button-secondary" type="button" data-reset-category-form>Отмена</button>
+            <button class="button button-primary" type="submit" data-category-submit>Добавить категорию</button>
+          </div>
+        </form>
+        <div class="category-list" data-category-list aria-live="polite"></div>
+        <div class="dialog-actions"><button class="button button-secondary" type="button" data-close-dialog>Закрыть</button></div>
+      </section>
+
+      <section class="dialog" role="dialog" aria-modal="true" aria-labelledby="data-dialog-title" data-dialog="data-dialog" hidden>
+        <div class="dialog-header">
+          <div>
+            <p class="eyebrow">Ваши данные</p>
+            <h2 id="data-dialog-title" tabindex="-1">Управление данными</h2>
+          </div>
+          <button class="icon-button" type="button" data-close-dialog aria-label="Закрыть окно управления данными">×</button>
+        </div>
+        <p class="dialog-copy">Храните резервную копию, если хотите перенести план на другое устройство.</p>
+        <p class="data-status" aria-live="polite" data-data-status></p>
+        <div class="data-section">
+          <h3>Резервная копия</h3>
+          <div class="dialog-actions data-actions">
+            <button class="button button-secondary" type="button" data-export-data>Экспортировать данные</button>
+            <button class="button button-secondary" type="button" data-import-data>Импортировать данные</button>
+            <input type="file" accept="application/json,.json" data-import-file hidden />
+          </div>
+          <p class="form-error" aria-live="assertive" data-data-error></p>
+        </div>
+        <div class="data-section">
+          <h3>История</h3>
+          <div class="dialog-actions data-actions">
+            <button class="button button-secondary" type="button" data-open-dialog="archive-dialog">Открыть архив</button>
+            <button class="text-button" type="button" data-clean-history="deleted">Очистить удалённые старше года</button>
+            <button class="text-button" type="button" data-clean-history="all-history">Очистить всю историю старше года</button>
+          </div>
+        </div>
+        <div class="data-section data-section-danger">
+          <h3>Начать заново</h3>
+          <p>Перед удалением всех данных можно сделать экспорт.</p>
+          <button class="button button-danger" type="button" data-request-reset>Удалить все данные</button>
+        </div>
+        <div class="dialog-actions">
+          <button class="button button-primary" type="button" data-close-dialog>Понятно</button>
+        </div>
+      </section>
+
+      <section class="dialog" role="dialog" aria-modal="true" aria-labelledby="management-dialog-title" data-dialog="management-dialog" hidden>
+        <div class="dialog-header">
+          <div>
+            <p class="eyebrow">Порядок и данные</p>
+            <h2 id="management-dialog-title" tabindex="-1">Управление</h2>
+          </div>
+          <button class="icon-button" type="button" data-close-dialog aria-label="Закрыть управление">×</button>
+        </div>
+        <p class="dialog-copy">Выберите, что хотите настроить.</p>
+        <div class="management-menu">
+          <button class="management-menu-item" type="button" data-open-management-section="categories-dialog"><span aria-hidden="true">◌</span><span><strong>Категории</strong><small>Организовать дела по темам</small></span></button>
+          <button class="management-menu-item" type="button" data-open-management-section="data-dialog"><span aria-hidden="true">▣</span><span><strong>Данные и архив</strong><small>Сохранение, импорт и история</small></span></button>
+        </div>
+      </section>
+
+      <section class="dialog" role="dialog" aria-modal="true" aria-labelledby="archive-dialog-title" data-dialog="archive-dialog" hidden>
+        <div class="dialog-header">
+          <div>
+            <p class="eyebrow">История</p>
+            <h2 id="archive-dialog-title" tabindex="-1">Архив удалённых задач</h2>
+          </div>
+          <button class="icon-button" type="button" data-close-dialog aria-label="Закрыть архив удалённых задач">×</button>
+        </div>
+        <p class="dialog-copy" data-archive-empty>Удалённых задач пока нет.</p>
+        <div class="archive-list" data-archive-list aria-live="polite"></div>
+        <div class="dialog-actions"><button class="button button-primary" type="button" data-close-dialog>Закрыть</button></div>
+      </section>
+
+      <section class="dialog" role="dialog" aria-modal="true" aria-labelledby="confirm-dialog-title" data-dialog="confirm-dialog" hidden>
+        <div class="dialog-header">
+          <div>
+            <p class="eyebrow" data-confirm-kicker>Подтверждение</p>
+            <h2 id="confirm-dialog-title" tabindex="-1" data-confirm-title>Удалить задачу?</h2>
+          </div>
+          <button class="icon-button" type="button" data-close-dialog aria-label="Закрыть подтверждение">×</button>
+        </div>
+        <p class="dialog-copy" data-confirm-copy></p>
+        <label class="confirmation-check" data-confirm-acknowledgement-wrap hidden><input type="checkbox" data-confirm-acknowledgement />Я понимаю, что данные нельзя будет восстановить без резервной копии.</label>
+        <div class="dialog-actions">
+          <button class="button button-secondary" type="button" data-close-dialog>Отмена</button>
+          <button class="button button-danger" type="button" data-confirm-action>Удалить</button>
+        </div>
+      </section>
+
+      <section class="dialog" role="dialog" aria-modal="true" aria-labelledby="timer-settings-dialog-title" data-dialog="timer-settings-dialog" hidden>
+        <div class="dialog-header">
+          <div>
+            <p class="eyebrow">Ежедневная привычка</p>
+            <h2 id="timer-settings-dialog-title" tabindex="-1">Длительность таймера</h2>
+          </div>
+          <button class="icon-button" type="button" data-close-dialog aria-label="Закрыть настройку таймера">×</button>
+        </div>
+        <form class="timer-settings-form" data-timer-settings-form>
+          <label for="timer-duration">Минуты<input id="timer-duration" name="timer-duration" type="number" min="1" max="120" step="1" required aria-describedby="timer-settings-error" /></label>
+          <p id="timer-settings-error" class="form-error" aria-live="assertive" data-timer-settings-error></p>
+          <div class="dialog-actions">
+            <button class="button button-secondary" type="button" data-close-dialog>Отмена</button>
+            <button class="button button-primary" type="submit">Сохранить длительность</button>
+          </div>
+        </form>
+      </section>
+
+      <section class="dialog" role="dialog" aria-modal="true" aria-labelledby="custom-habit-dialog-title" data-dialog="custom-habit-dialog" hidden>
+        <div class="dialog-header">
+          <div>
+            <p class="eyebrow">Каждый день</p>
+            <h2 id="custom-habit-dialog-title" tabindex="-1">Ежедневные привычки</h2>
+          </div>
+          <button class="icon-button" type="button" data-close-dialog aria-label="Закрыть управление привычками">×</button>
+        </div>
+        <form class="custom-habit-form" data-custom-habit-form>
+          <label for="custom-habit-title">Название привычки<input id="custom-habit-title" name="custom-habit-title" type="text" maxlength="80" required aria-describedby="custom-habit-error" /></label>
+          <p id="custom-habit-error" class="form-error" aria-live="assertive" data-custom-habit-error></p>
+          <div class="dialog-actions"><button class="button button-primary" type="submit">Добавить привычку</button></div>
+        </form>
+        <div class="custom-habit-list" data-custom-habit-list aria-live="polite"></div>
+        <div class="dialog-actions"><button class="button button-secondary" type="button" data-close-dialog>Закрыть</button></div>
+      </section>
+
+      <section class="dialog" role="dialog" aria-modal="true" aria-labelledby="overdue-move-dialog-title" data-dialog="overdue-move-dialog" hidden>
+        <div class="dialog-header">
+          <div>
+            <p class="eyebrow">Просроченное дело</p>
+            <h2 id="overdue-move-dialog-title" tabindex="-1">Куда перенести задачу?</h2>
+          </div>
+          <button class="icon-button" type="button" data-close-dialog aria-label="Закрыть перенос просроченной задачи">×</button>
+        </div>
+        <p class="dialog-copy" data-overdue-move-task-title></p>
+        <div class="dialog-actions">
+          <button class="button button-secondary" type="button" data-overdue-move-today>На сегодня</button>
+        </div>
+        <form class="overdue-move-form" data-overdue-move-form>
+          <label for="overdue-move-date">Выбрать дату<input id="overdue-move-date" name="overdue-move-date" type="date" required aria-describedby="overdue-move-error" /></label>
+          <p id="overdue-move-error" class="form-error" aria-live="assertive" data-overdue-move-error></p>
+          <div class="dialog-actions">
+            <button class="button button-primary" type="submit">Перенести на выбранную дату</button>
+          </div>
+        </form>
+      </section>
+    </div>
+  </body>
+</html>
+
